@@ -1,0 +1,7 @@
+{
+  "prefix": "visDrilldown",
+  "paths": {
+    "visDrilldown": "."
+  },
+  "translations": ["translations/ja-JP.json"]
+}
