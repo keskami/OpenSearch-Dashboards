@@ -42,7 +42,6 @@ import {
   getApplication,
   getEmbeddable,
 } from '../services';
-import { get } from 'jquery';
 
 export interface ShowNewVisModalParams {
   editorParams?: string[];
