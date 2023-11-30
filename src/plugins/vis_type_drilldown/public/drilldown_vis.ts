@@ -14,28 +14,34 @@ export const drillDownVisDefinition = {
   title: 'Drilldown',
   isAccessible: true,
   icon: 'logstashFilter',
-  description: i18n.translate('visTypeMarkdown.markdownDescription', {
+  description: i18n.translate('visTypeDrilldown.drilldownDescription', {
+
     defaultMessage: 'I LOVE drilldown!',
   }),
   toExpressionAst,
   visConfig: {
     defaults: {
-      cardName: '',
-      cardDescription: '',
+      cards: [
+        {
+          cardName: '',
+          cardDescription: '',
+          cardUrl: '',
+        },
+      ],
     },
   },
   editorConfig: {
     optionTabs: [
       {
         name: 'advanced',
-        title: i18n.translate('visTypeMarkdown.tabs.dataText', {
+        title: i18n.translate('visTypeDrilldown.tabs.dataText', {
           defaultMessage: 'Data',
         }),
         editor: DrilldownOptions,
       },
       {
         name: 'options',
-        title: i18n.translate('visTypeMarkdown.tabs.optionsText', {
+        title: i18n.translate('visTypeDrilldown.tabs.optionsText', {
           defaultMessage: 'Options',
         }),
         editor: SettingsOptions,

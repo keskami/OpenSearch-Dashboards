@@ -8,9 +8,9 @@ import { CoreStart } from 'src/core/server';
 import { NavigationPublicPluginStart } from '../../navigation/public';
 import { VisualizationsSetup } from '../../visualizations/public';
 
-export interface VisDrilldownPluginSetup {
-  getGreeting: () => string;
-}
+// export interface VisDrilldownPluginSetup {
+//   getGreeting: () => string;
+// }
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface VisDrilldownPluginStart {}
 
@@ -19,26 +19,18 @@ export interface AppPluginStartDependencies {
   visualizations: VisualizationsSetup;
 }
 
-// export interface Arguments {
-//   markdown: string;
-//   font: Style;
-//   openLinksInNewTab: boolean;
-// }
-
-// export interface DrilldownVisParams {
-//   markdown: Arguments['markdown'];
-//   openLinksInNewTab: Arguments['openLinksInNewTab'];
-//   fontSize: number;
-// }
-
-export interface DrilldownArguments {
+export interface Card {
   cardName: string;
   cardDescription: string;
+  cardUrl: string;
+}
+
+export interface DrilldownArguments {
+  cards: Card[];
 }
 
 export interface DrilldownVisParams {
-  cardName: DrilldownArguments['cardName'];
-  cardDescription: DrilldownArguments['cardDescription'];
+  cards: Card[];
 }
 
 export interface DrilldownServices extends CoreStart {

@@ -3,28 +3,39 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useCallback, Fragment, useState, useEffect, useRef } from 'react';
+import React, { useCallback, Fragment, useEffect, useRef } from 'react';
 import {
-  EuiPanel,
   EuiTitle,
-  EuiTextArea,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiFieldText,
-  EuiAccordion,
   EuiSuperSelect,
   EuiText,
+  EuiButtonEmpty,
 } from '@elastic/eui';
-
+import { FormattedMessage } from '@osd/i18n/react';
 import { VisOptionsProps } from 'src/plugins/vis_default_editor/public';
 import { useOpenSearchDashboards } from '../../opensearch_dashboards_react/public';
-import { DrilldownServices, DrilldownVisParams } from './types';
+import { Card, DrilldownServices, DrilldownVisParams } from './types';
+import { CardForm } from './components/card_form';
 
 function DrilldownOptions({ stateParams, setValue }: VisOptionsProps<DrilldownVisParams>) {
-  const onMarkdownUpdate = useCallback(
-    (value: DrilldownVisParams['cardName']) => setValue('cardName', value),
-    [setValue]
+  const updateCard = useCallback(
+    (index: number, card: Card) => {
+      const updatedCards = [...stateParams.cards];
+      updatedCards[index] = card;
+      setValue('cards', updatedCards);
+    },
+    [stateParams.cards, setValue]
   );
+
+  const addCardForm = useCallback(() => {
+    const newCard: Card = {
+      cardName: 'newDrilldownCard',
+      cardDescription: 'newDrilldownCard',
+      cardUrl: 'newDrilldownCard',
+    };
+    setValue('cards', [...stateParams.cards, newCard]);
+  }, [stateParams.cards, setValue]);
 
   const {
     services: { http, savedObjects },
@@ -56,14 +67,14 @@ function DrilldownOptions({ stateParams, setValue }: VisOptionsProps<DrilldownVi
   ]);
 
   const saved = useRef<any>();
-  const index = useRef<any>();
+  // const index = useRef<any>();
 
   useEffect(() => {
     const fetchData = async () => {
       saved.current = savedObjects?.client.find({
         type: 'dashboard',
       });
-      const path = (await saved.current).savedObjects[0]['client']
+      const path = (await saved.current).savedObjects[0].client
         .getPath(['dashboard', (await saved.current).savedObjects[0].id])
         .substring(28);
       const savedObjectURL = http.basePath.prepend('/app/dashboards#/view/' + path);
@@ -87,76 +98,36 @@ function DrilldownOptions({ stateParams, setValue }: VisOptionsProps<DrilldownVi
       ];
     };
     fetchData();
-  }, []);
-
-  const onDescriptionUpdate = useCallback(
-    (value: DrilldownVisParams['cardDescription']) => setValue('cardDescription', value),
-    [setValue]
-  );
+  });
 
   const activeVisName = '';
   const handleVisTypeChange = () => {};
 
   return (
-    <EuiAccordion buttonContent="Drilldown 1">
-      <EuiPanel paddingSize="s">
-        <EuiFlexGroup direction="column" gutterSize="m" className="eui-fullHeight">
-          <EuiFlexItem>
-            <EuiTitle size="xs">
-              <h2>
-                <label htmlFor="drilldownVisInput">Card Name</label>
-              </h2>
-            </EuiTitle>
-          </EuiFlexItem>
-
-          <EuiFlexItem>
-            <EuiFieldText
-              id="drilldownVisInput"
-              placeholder="Placeholder text"
-              className="eui-fullHeight"
-              value={stateParams.cardName}
-              onChange={({ target: { value } }) => onMarkdownUpdate(value)}
-              fullWidth={true}
+    <EuiFlexGroup
+      className="visEditorSidebar"
+      justifyContent="spaceBetween"
+      gutterSize="none"
+      responsive={false}
+      direction="column"
+    >
+      {stateParams.cards &&
+        stateParams.cards.map((card, index) => (
+          <>
+            <CardForm
+              index={index}
+              card={card}
+              updateCard={updateCard}
+              options={options.current}
+              valueOfSelected={activeVisName}
+              onChange={handleVisTypeChange}
             />
-          </EuiFlexItem>
-
-          <EuiFlexItem>
-            <EuiTitle size="xs">
-              <h2>
-                <label htmlFor="drilldownVisInput">Description</label>
-              </h2>
-            </EuiTitle>
-          </EuiFlexItem>
-
-          <EuiFlexItem>
-            <EuiTextArea
-              id="markdownVisInput"
-              className="eui-fullHeight"
-              value={stateParams.cardDescription}
-              onChange={({ target: { value } }) => onDescriptionUpdate(value)}
-              fullWidth={true}
-              data-test-subj="markdownTextarea"
-            />
-          </EuiFlexItem>
-
-          <EuiFlexItem>
-            <EuiTitle size="xs">
-              <h2>
-                <label htmlFor="drilldownVisInput">Select a Destination</label>
-              </h2>
-            </EuiTitle>
-          </EuiFlexItem>
-
-          <EuiSuperSelect
-            options={options.current}
-            valueOfSelected={activeVisName}
-            onChange={handleVisTypeChange}
-            fullWidth
-            data-test-subj="chartPicker"
-          />
-        </EuiFlexGroup>
-      </EuiPanel>
-    </EuiAccordion>
+          </>
+        ))}
+      <EuiButtonEmpty size="xs" iconType="plusInCircleFilled" onClick={addCardForm}>
+        <FormattedMessage id="visDefaultEditor.aggAdd.addButtonLabel" defaultMessage="Add" />
+      </EuiButtonEmpty>
+    </EuiFlexGroup>
   );
 }
 

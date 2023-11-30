@@ -14,7 +14,7 @@ const DrilldownVisComponent = lazy(() => import('./drilldown_vis_controller'));
 
 export const drilldownVisRenderer: ExpressionRenderDefinition<DrilldownVisRenderValue> = {
   name: 'drilldown_vis',
-  displayName: 'markdown visualization',
+  displayName: 'drilldown visualization',
   reuseDomNode: true,
   render: async (domNode, { visParams }, handlers) => {
     handlers.onDestroy(() => {

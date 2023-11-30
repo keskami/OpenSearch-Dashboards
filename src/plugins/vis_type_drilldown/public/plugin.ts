@@ -3,14 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { i18n } from '@osd/i18n';
-import { AppMountParameters, CoreSetup, CoreStart, Plugin } from '../../../core/public';
-import {
-  VisDrilldownPluginSetup,
-  VisDrilldownPluginStart,
-  AppPluginStartDependencies,
-} from './types';
-import { PLUGIN_NAME } from '../common';
+import { CoreSetup, CoreStart, Plugin } from '../../../core/public';
+import { VisDrilldownPluginSetup, VisDrilldownPluginStart } from './types';
 import { drillDownVisDefinition } from './drilldown_vis';
 import { createDrilldownVisFn } from './drilldown_fn';
 import { VisualizationsSetup } from '../../visualizations/public';
