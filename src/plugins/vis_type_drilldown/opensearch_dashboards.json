@@ -10,7 +10,8 @@
     "visualizations",
     "navigation",
     "data",
-    "visDefaultEditor"
+    "visDefaultEditor",
+    "opensearchDashboardsReact"
   ],
   "optionalPlugins": []
 }

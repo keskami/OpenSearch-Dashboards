@@ -51,7 +51,7 @@ export class SimpleSavedObject<T = unknown> {
   public migrationVersion: SavedObjectType<T>['migrationVersion'];
   public error: SavedObjectType<T>['error'];
   public references: SavedObjectType<T>['references'];
-  public updated_at: SavedObjectType<T>['updated_at']
+  public updated_at: SavedObjectType<T>['updated_at'];
 
   constructor(
     private client: SavedObjectsClient,
