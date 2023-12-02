@@ -3,9 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { EuiCard, EuiFlexItem, EuiIcon } from '@elastic/eui';
-import { DrilldownVisParams, Card } from './types';
+import { useOpenSearchDashboards } from '../../opensearch_dashboards_react/public';
+import { DrilldownVisParams, Card, DrilldownServices } from './types';
 
 interface DrilldownVisComponentProps extends DrilldownVisParams {
   renderComplete: () => void;
@@ -14,7 +15,20 @@ interface DrilldownVisComponentProps extends DrilldownVisParams {
 const DrilldownVisComponent = ({ cards, renderComplete }: DrilldownVisComponentProps) => {
   useEffect(renderComplete); // renderComplete will be called after each render to signal, that we are done with rendering.
 
+  const {
+    services: { application },
+  } = useOpenSearchDashboards<DrilldownServices>();
+
   const parsedCardData = JSON.parse(cards);
+
+  const onDashboardSelection = useCallback(
+    (id) => {
+      application?.navigateToApp('dashboards', {
+        path: `#/view/${id}`,
+      });
+    },
+    [application]
+  );
 
   return (
     <>
@@ -26,7 +40,23 @@ const DrilldownVisComponent = ({ cards, renderComplete }: DrilldownVisComponentP
               title={card.cardName}
               layout="horizontal"
               description={card.cardDescription}
-              onClick={() => window.open(card.cardUrl, '_blank')}
+              onClick={() => {
+                console.log(card.cardType)
+                switch (card.cardType) {
+                  case 'URL':
+                    // Implement navigation logic to a different URL
+                    window.open(card.cardUrl);
+                    break;
+                  case 'Dashboard':
+                    // Implement custom action logic
+                    onDashboardSelection(card.cardDashboardID);
+                    break;
+                  default:
+                    window.open('_blank');
+                    // Handle default case or throw an error if needed
+                    break;
+                }
+              }}
               paddingSize="m"
             />
           </EuiFlexItem>

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
   EuiPanel,
   EuiTitle,
@@ -13,26 +13,27 @@ import {
   EuiAccordion,
   EuiFlexGroup,
   EuiSuperSelect,
+  EuiFilterButton,
 } from '@elastic/eui';
 import { Card } from '../types';
+import { i18n } from '@osd/i18n';
 
 interface CardFormProps {
   index: number;
   card: Card;
   updateCard: (index: number, card: Card) => void;
   options: any;
-  valueOfSelected: string;
-  onChange: () => void;
 }
+
+
 
 const CardForm = ({
   index,
   card,
   updateCard,
   options,
-  valueOfSelected,
-  onChange,
 }: CardFormProps) => {
+  const [activeVisName, setActiveVisName] = useState<any>('');
   return (
     <EuiAccordion
       id={String(index)}
@@ -98,7 +99,7 @@ const CardForm = ({
               className="eui-fullHeight"
               value={card.cardUrl}
               onChange={({ target: { value } }) => {
-                updateCard(index, { ...card, cardUrl: value });
+                updateCard(index, { ...card, cardUrl: value, cardType: 'URL' });
               }}
               fullWidth={true}
             />
@@ -114,8 +115,11 @@ const CardForm = ({
 
           <EuiSuperSelect
             options={options}
-            valueOfSelected={valueOfSelected}
-            onChange={onChange}
+            valueOfSelected={activeVisName}
+            onChange={(selectedDashboard: string) => {
+              setActiveVisName(selectedDashboard);
+              updateCard(index, { ...card, cardDashboardID: selectedDashboard, cardType: 'Dashboard' });
+            }}
             fullWidth={true}
             data-test-subj="chartPicker"
           />

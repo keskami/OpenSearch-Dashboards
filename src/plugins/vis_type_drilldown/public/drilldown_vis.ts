@@ -26,6 +26,8 @@ export const drillDownVisDefinition = {
           cardName: '',
           cardDescription: '',
           cardUrl: '',
+          cardType: '',
+          cardDashboardID: '',
         },
       ],
     },

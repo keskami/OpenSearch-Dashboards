@@ -23,6 +23,8 @@ export interface Card {
   cardName: string;
   cardDescription: string;
   cardUrl: string;
+  cardType: string;
+  cardDashboardID: string;
 }
 
 export interface DrilldownArguments {
