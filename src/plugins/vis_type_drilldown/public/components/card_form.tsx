@@ -16,7 +16,6 @@ import {
   EuiFilterButton,
 } from '@elastic/eui';
 import { Card } from '../types';
-import { i18n } from '@osd/i18n';
 
 interface CardFormProps {
   index: number;
@@ -25,14 +24,7 @@ interface CardFormProps {
   options: any;
 }
 
-
-
-const CardForm = ({
-  index,
-  card,
-  updateCard,
-  options,
-}: CardFormProps) => {
+const CardForm = ({ index, card, updateCard, options }: CardFormProps) => {
   const [activeVisName, setActiveVisName] = useState<any>('');
   return (
     <EuiAccordion
@@ -118,7 +110,11 @@ const CardForm = ({
             valueOfSelected={activeVisName}
             onChange={(selectedDashboard: string) => {
               setActiveVisName(selectedDashboard);
-              updateCard(index, { ...card, cardDashboardID: selectedDashboard, cardType: 'Dashboard' });
+              updateCard(index, {
+                ...card,
+                cardDashboardID: selectedDashboard,
+                cardType: 'Dashboard',
+              });
             }}
             fullWidth={true}
             data-test-subj="chartPicker"

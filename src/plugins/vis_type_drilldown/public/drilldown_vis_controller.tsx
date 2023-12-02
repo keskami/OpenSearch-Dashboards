@@ -41,7 +41,6 @@ const DrilldownVisComponent = ({ cards, renderComplete }: DrilldownVisComponentP
               layout="horizontal"
               description={card.cardDescription}
               onClick={() => {
-                console.log(card.cardType)
                 switch (card.cardType) {
                   case 'URL':
                     // Implement navigation logic to a different URL

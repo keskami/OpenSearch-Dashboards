@@ -14,10 +14,10 @@ import {
 } from '@elastic/eui';
 import { FormattedMessage } from '@osd/i18n/react';
 import { VisOptionsProps } from 'src/plugins/vis_default_editor/public';
+import { SimpleSavedObject } from 'src/core/public/saved_objects/simple_saved_object';
 import { useOpenSearchDashboards } from '../../opensearch_dashboards_react/public';
 import { Card, DrilldownServices, DrilldownVisParams } from './types';
 import { CardForm } from './components/card_form';
-import { SimpleSavedObject } from 'src/core/public/saved_objects/simple_saved_object';
 
 function DrilldownOptions({ stateParams, setValue }: VisOptionsProps<DrilldownVisParams>) {
   const updateCard = useCallback(
@@ -62,8 +62,6 @@ function DrilldownOptions({ stateParams, setValue }: VisOptionsProps<DrilldownVi
     inputDisplay: dashboard.attributes.title,
   }));
 
-
-
   return (
     <EuiFlexGroup
       className="visEditorSidebar"
@@ -75,12 +73,7 @@ function DrilldownOptions({ stateParams, setValue }: VisOptionsProps<DrilldownVi
       {stateParams.cards &&
         stateParams.cards.map((card, index) => (
           <>
-            <CardForm
-              index={index}
-              card={card}
-              updateCard={updateCard}
-              options={options}
-              />
+            <CardForm index={index} card={card} updateCard={updateCard} options={options} />
           </>
         ))}
       <EuiButtonEmpty size="xs" iconType="plusInCircleFilled" onClick={addCardForm}>
